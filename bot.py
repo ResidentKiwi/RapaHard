@@ -8,10 +8,13 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Obtenha o token do ambiente ou de um arquivo de configuração externo
-TOKEN = os.getenv("6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM")  # Certifique-se de definir essa variável de ambiente
+TOKEN = os.getenv("6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM")
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Olá! Este é o seu bot.')
+
+def hello(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text('Olá! Eu sou um bot simples. Como posso ajudar você?')
 
 def inline_query(update: Update, context: CallbackContext) -> None:
     query = update.inline_query.query
@@ -36,6 +39,7 @@ def main() -> None:
 
     # Adiciona os manipuladores de comando
     dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("hello", hello))
 
     # Adiciona o manipulador de consulta inline
     dp.add_handler(InlineQueryHandler(inline_query))
