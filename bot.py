@@ -1,13 +1,19 @@
+import logging
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 
-async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text(f'Hello {update.effective_user.first_name}')
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
-
-app = ApplicationBuilder().token("6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM").build()
-
-app.add_handler(CommandHandler("hello", hello))
-
-app.run_polling()
+if __name__ == '__main__':
+    application = ApplicationBuilder().token('6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM').build()
+    
+    start_handler = CommandHandler('start', start)
+    application.add_handler(start_handler)
+    
+    application.run_polling()
