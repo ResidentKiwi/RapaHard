@@ -8,7 +8,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Obtenha o token do ambiente ou de um arquivo de configuração externo
-TOKEN = "6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM"
+TOKEN = "6953854001:AAEmG7hr0u9-spr-Q6-MpfHOMF1bnjdmzp0"
 
 def start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text('Olá! Este é o seu bot.')
