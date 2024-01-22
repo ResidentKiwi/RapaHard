@@ -29,7 +29,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
 if __name__ == '__main__':
-    application = ApplicationBuilder().token('6324283139:AAFF-W5yIPzTbDEdLIhXTFB9P_4ppbR2ggM').build()
+    application = ApplicationBuilder().token('6625043430:AAGd2MuPBCxrfZWgrT1OTaSpq0NPaAZkMtI').build()
     
     start_handler = CommandHandler('start', start)
     application.add_handler(start_handler)
