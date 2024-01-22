@@ -1,27 +1,13 @@
-from telegram.ext import Updater, CommandHandler
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-# Função para lidar com o comando /hello
-def hello(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Olá! Estou funcionando.")
 
-def main():
-    # Token do seu bot do Telegram
-    token = '6953854001:AAEmG7hr0u9-spr-Q6-MpfHOMF1bnjdmzp0'
+async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(f'Hello {update.effective_user.first_name}')
 
-    # Inicializa o Updater com o token
-    updater = Updater(token, use_context=True)
 
-    # Obtém o dispatcher para registrar manipuladores
-    dp = updater.dispatcher
+app = ApplicationBuilder().token("YOUR TOKEN HERE").build()
 
-    # Adiciona um manipulador para o comando /hello
-    dp.add_handler(CommandHandler("hello", hello))
+app.add_handler(CommandHandler("hello", hello))
 
-    # Inicia o bot
-    updater.start_polling()
-
-    # Aguarda o bot ser encerrado manualmente
-    updater.idle()
-
-if __name__ == '__main__':
-    main()
+app.run_polling()
