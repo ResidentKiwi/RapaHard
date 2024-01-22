@@ -1,53 +1,27 @@
-from telegram import Update, InlineQueryResultArticle, InputTextMessageContent
-from telegram.ext import Updater, CommandHandler, CallbackContext, InlineQueryHandler
-import logging
-import os
+from telegram.ext import Updater, CommandHandler
 
-# Configuração do logger
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Função para lidar com o comando /hello
+def hello(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Olá! Estou funcionando.")
 
-# Obtenha o token do ambiente ou de um arquivo de configuração externo
-TOKEN = "6953854001:AAEmG7hr0u9-spr-Q6-MpfHOMF1bnjdmzp0"
+def main():
+    # Token do seu bot do Telegram
+    token = '6953854001:AAEmG7hr0u9-spr-Q6-MpfHOMF1bnjdmzp0'
 
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Olá! Este é o seu bot.')
+    # Inicializa o Updater com o token
+    updater = Updater(token, use_context=True)
 
-def hello(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Olá! Eu sou um bot simples. Como posso ajudar você?')
-
-def inline_query(update: Update, context: CallbackContext) -> None:
-    query = update.inline_query.query
-
-    # Processa a consulta e obtém resultados
-    results = [
-        InlineQueryResultArticle(
-            id='1',
-            title='Título do Resultado',
-            input_message_content=InputTextMessageContent('Conteúdo do Resultado'),
-        ),
-        # Adicione mais resultados conforme necessário
-    ]
-
-    # Envia os resultados da consulta
-    update.inline_query.answer(results)
-
-def main() -> None:
-    updater = Updater(TOKEN)
-
+    # Obtém o dispatcher para registrar manipuladores
     dp = updater.dispatcher
 
-    # Adiciona os manipuladores de comando
-    dp.add_handler(CommandHandler("start", start))
+    # Adiciona um manipulador para o comando /hello
     dp.add_handler(CommandHandler("hello", hello))
 
-    # Adiciona o manipulador de consulta inline
-    dp.add_handler(InlineQueryHandler(inline_query))
-
+    # Inicia o bot
     updater.start_polling()
 
+    # Aguarda o bot ser encerrado manualmente
     updater.idle()
 
 if __name__ == '__main__':
     main()
-    
