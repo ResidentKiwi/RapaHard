@@ -1,36 +1,49 @@
-import logging
 from telegram import Update
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
-from telegram import Update
-from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
-from telegram import InlineQueryResultArticle, InputTextMessageContent
-from telegram.ext import InlineQueryHandler
-    
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+import random
+import os
 
+# Função para /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    await update.message.reply_text("Olá! Eu sou um bot divertido. Use /poema para criar poemas ou outros comandos para explorar mais!")
 
-if __name__ == '__main__':
-    application = ApplicationBuilder().token('6625043430:AAGd2MuPBCxrfZWgrT1OTaSpq0NPaAZkMtI').build()
-    
-    start_handler = CommandHandler('start', start)
-    application.add_handler(start_handler)
-    
-    application.run_polling()
+# Função para /help
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("""
+Comandos disponíveis:
+/start - Inicia o bot
+/help - Lista os comandos disponíveis
+/poema - Gera um poema aleatório
+    """)
 
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+# Função principal do comando /poema
+async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    poemas = [
+        "Nas sombras do cosmos, a eternidade passa,\nA solidão ecoa, mas o espírito não fracassa.",
+        "Os mundos giram como histórias sem fim,\nCada estrela, um novo começo para mim.",
+        "Ao céu escuro dou meu olhar,\nProcurando redenção onde o amor possa estar.",
+        "Caminhei por terras que o tempo esqueceu,\nAinda buscando algo que sempre foi meu."
+    ]
+    poema_escolhido = random.choice(poemas)
+    await update.message.reply_text(f"Eis seu poema:\n\n{poema_escolhido}")
 
-    
-if __name__ == '__main__':
-    ...
-    echo_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), echo)
-    
-    application.add_handler(start_handler)
-    application.add_handler(echo_handler)
+# Inicializa o bot
+async def main():
+    token = os.getenv("TELEGRAM_BOT_TOKEN")  # O token vem das variáveis de ambiente
+    if not token:
+        raise RuntimeError("O token do bot não foi configurado corretamente.")
 
-    application.run_polling()
+    application = ApplicationBuilder().token(token).build()
+
+    # Handlers dos comandos
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("poema", poema))
+
+    # Roda o bot
+    print("Bot está rodando...")
+    await application.run_polling()
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
