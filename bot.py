@@ -27,8 +27,8 @@ async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poema_escolhido = random.choice(poemas)
     await update.message.reply_text(f"Eis seu poema:\n\n{poema_escolhido}")
 
-# Inicializa o bot
-async def main():
+# Função principal para inicializar o bot
+def main():
     token = os.getenv("TELEGRAM_BOT_TOKEN")  # O token vem das variáveis de ambiente
     if not token:
         raise RuntimeError("O token do bot não foi configurado corretamente.")
@@ -42,8 +42,7 @@ async def main():
 
     # Roda o bot
     print("Bot está rodando...")
-    await application.run_polling()
+    application.run_polling()  # NÃO precisa ser await ou estar dentro de asyncio.run()
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+    main()
