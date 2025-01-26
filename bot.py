@@ -3,9 +3,10 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import random
 import os
 
+user = update.effective_user.first_name
 # Função para /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Olá! Eu sou um bot divertido. Use /poema para criar poemas ou outros comandos para explorar mais!")
+    await update.message.reply_text("Olá, {user} Eu sou um bot divertido. Use /poema para criar poemas ou outros comandos para explorar mais!")
 
 # Função para /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
