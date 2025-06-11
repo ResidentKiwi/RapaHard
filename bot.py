@@ -34,7 +34,7 @@ async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [
             InlineKeyboardButton(
                 text="📦 Abrir Catálogo",
-                web_app=WebAppInfo(url="https://SEU-USUARIO.github.io/NOME-DO-REPO/")  # <-- Substitua pelo link real
+                web_app=WebAppInfo(url="https://github.com/ResidentKiwi/catalogo-bot-telegram")  # <-- Substitua pelo link real
             )
         ]
     ]
