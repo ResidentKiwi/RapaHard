@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Enviar botão Telegram WebApp</title>
+</head>
+<body>
+  <h2>Enviar Botão de Acesso à WebApp</h2>
+
+  <form id="form">
+    <label>
+      Token do Bot:
+      <input type="text" id="token" required>
+    </label><br><br>
+    <label>
+      ID do Usuário (chat_id):
+      <input type="text" id="chat_id" required>
+    </label><br><br>
+    <label>
+      URL da WebApp:
+      <input type="text" id="webapp_url" value="https://seuusuario.github.io/seurepo" required>
+    </label><br><br>
+
+    <button type="submit">🚀 Enviar Botão</button>
+  </form>
+
+  <pre id="resposta" style="margin-top: 20px; background: #f4f4f4; padding: 10px;"></pre>
+
+  <script>
+    document.getElementById("form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const token = document.getElementById("token").value.trim();
+      const chat_id = document.getElementById("chat_id").value.trim();
+      const webapp_url = document.getElementById("webapp_url").value.trim();
+
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      const payload = {
+        chat_id,
+        text: "Clique no botão abaixo para abrir o catálogo 📂",
+        reply_markup: {
+          inline_keyboard: [[
+            {
+              text: "📂 Abrir Catálogo",
+              web_app: {
+                url: webapp_url
+              }
+            }
+          ]]
+        }
+      };
+
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        document.getElementById("resposta").textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById("resposta").textContent = "Erro: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
