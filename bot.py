@@ -1,23 +1,23 @@
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import random
 import os
 
-# Função para /start
+# Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.effective_user.first_name
     await update.message.reply_text("O bot está em funcionamento!🏓🤓")
 
-# Função para /help
+# Comando /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("""
 Comandos disponíveis:
 /start - Inicia o bot
 /help - Lista os comandos disponíveis
 /poema - Gera um poema aleatório
+/catalogo - Acessa o catálogo de canais
     """)
 
-# Função principal do comando /poema
+# Comando /poema
 async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poemas = [
         "Nas sombras do cosmos, a eternidade passa,\nA solidão ecoa, mas o espírito não fracassa.",
@@ -28,22 +28,39 @@ async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poema_escolhido = random.choice(poemas)
     await update.message.reply_text(f"Eis seu poema:\n\n{poema_escolhido}")
 
-# Função principal para inicializar o bot
+# ✅ Comando /catalogo com botão para WebApp
+async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                text="📦 Abrir Catálogo",
+                web_app=WebAppInfo(url="https://SEU-USUARIO.github.io/NOME-DO-REPO/")  # <-- Substitua pelo link real
+            )
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await update.message.reply_text(
+        "Clique no botão abaixo para acessar o catálogo de canais:",
+        reply_markup=reply_markup
+    )
+
+# Inicializa o bot
 def main():
-    token = os.getenv("TELEGRAM_BOT_TOKEN")  # O token vem das variáveis de ambiente
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not token:
         raise RuntimeError("O token do bot não foi configurado corretamente.")
 
     application = ApplicationBuilder().token(token).build()
 
-    # Handlers dos comandos
+    # Registra comandos
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("poema", poema))
+    application.add_handler(CommandHandler("catalogo", catalogo))  # ✅ Aqui está o novo comando
 
-    # Roda o bot
     print("Bot está rodando...")
-    application.run_polling()  # NÃO precisa ser await ou estar dentro de asyncio.run()
+    application.run_polling()
 
 if __name__ == "__main__":
     main()
