@@ -3,21 +3,34 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import random
 import os
 
-# Comando /start
+# 🌟 Catálogo WebApp URL
+CATALOGO_URL = "https://residentkiwi.github.io/catalogo-bot-telegram/"
+
+# ✅ Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("O bot está em funcionamento!🏓🤓")
+    keyboard = [
+        [InlineKeyboardButton("📦 Abrir Catálogo", web_app=WebAppInfo(url=CATALOGO_URL))]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-# Comando /help
+    await update.message.reply_text(
+        "👋 Olá! Seja bem-vindo(a) ao bot do Catálogo de Canais.\n\n"
+        "Use o botão abaixo para acessar o catálogo:",
+        reply_markup=reply_markup
+    )
+
+# ✅ Comando /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("""
-Comandos disponíveis:
-/start - Inicia o bot
-/help - Lista os comandos disponíveis
-/poema - Gera um poema aleatório
-/catalogo - Acessa o catálogo de canais
-    """)
+    await update.message.reply_text(
+        "📖 *Lista de Comandos Disponíveis:*\n\n"
+        "/start – Inicia o bot e mostra o botão do catálogo\n"
+        "/help – Exibe esta mensagem de ajuda\n"
+        "/poema – Gera um poema aleatório\n"
+        "/catalogo – Abre o catálogo de canais via botão\n",
+        parse_mode="Markdown"
+    )
 
-# Comando /poema
+# ✅ Comando /poema
 async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poemas = [
         "Nas sombras do cosmos, a eternidade passa,\nA solidão ecoa, mas o espírito não fracassa.",
@@ -26,17 +39,12 @@ async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Caminhei por terras que o tempo esqueceu,\nAinda buscando algo que sempre foi meu."
     ]
     poema_escolhido = random.choice(poemas)
-    await update.message.reply_text(f"Eis seu poema:\n\n{poema_escolhido}")
+    await update.message.reply_text(f"📝 *Eis seu poema:*\n\n_{poema_escolhido}_", parse_mode="Markdown")
 
-# ✅ Comando /catalogo com botão para WebApp
+# ✅ Comando /catalogo
 async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
-        [
-            InlineKeyboardButton(
-                text="📦 Abrir Catálogo",
-                web_app=WebAppInfo(url="https://residentkiwi.github.io/catalogo-bot-telegram/")  # <-- Substitua pelo link real
-            )
-        ]
+        [InlineKeyboardButton("📦 Abrir Catálogo", web_app=WebAppInfo(url=CATALOGO_URL))]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -45,22 +53,23 @@ async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# Inicializa o bot
+# ✅ Função principal
 def main():
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not token:
-        raise RuntimeError("O token do bot não foi configurado corretamente.")
+        raise RuntimeError("❌ Token do bot não configurado.")
 
     application = ApplicationBuilder().token(token).build()
 
-    # Registra comandos
+    # 📌 Registra comandos
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("poema", poema))
-    application.add_handler(CommandHandler("catalogo", catalogo))  # ✅ Aqui está o novo comando
+    application.add_handler(CommandHandler("catalogo", catalogo))
 
-    print("Bot está rodando...")
+    print("✅ Bot está rodando...")
     application.run_polling()
 
+# 🚀 Executa o bot
 if __name__ == "__main__":
     main()
