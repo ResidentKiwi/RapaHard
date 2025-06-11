@@ -6,7 +6,7 @@ import os
 # Função para /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user.first_name
-    await update.message.reply_text("ping! 🏓" \n "o bot está em funcionamento!")
+    await update.message.reply_text("O bot está em funcionamento!🏓🤓")
 
 # Função para /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
