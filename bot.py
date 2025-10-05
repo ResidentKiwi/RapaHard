@@ -3,10 +3,10 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import random
 import os
 
-# 🌟 Catálogo WebApp URL
+#  Catálogo WebApp URL
 CATALOGO_URL = "https://residentkiwi.github.io/catalogo-bot-telegram/"
 
-# ✅ Comando /start
+#  Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("📦 Abrir Catálogo", web_app=WebAppInfo(url=CATALOGO_URL))]
@@ -19,7 +19,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# ✅ Comando /help
+#  Comando /help
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "📖 *Lista de Comandos Disponíveis:*\n\n"
@@ -30,7 +30,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
 
-# ✅ Comando /poema
+#  Comando /poema
 async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poemas = [
         "Nas sombras do cosmos, a eternidade passa,\nA solidão ecoa, mas o espírito não fracassa.",
@@ -41,7 +41,7 @@ async def poema(update: Update, context: ContextTypes.DEFAULT_TYPE):
     poema_escolhido = random.choice(poemas)
     await update.message.reply_text(f"📝 *Eis seu poema:*\n\n_{poema_escolhido}_", parse_mode="Markdown")
 
-# ✅ Comando /catalogo
+# Comando /catalogo
 async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("📦 Abrir Catálogo", web_app=WebAppInfo(url=CATALOGO_URL))]
@@ -53,7 +53,7 @@ async def catalogo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# ✅ Função principal
+#  Função principal
 def main():
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     if not token:
@@ -67,9 +67,9 @@ def main():
     application.add_handler(CommandHandler("poema", poema))
     application.add_handler(CommandHandler("catalogo", catalogo))
 
-    print("✅ Bot está rodando...")
+    print(" Bot está rodando...")
     application.run_polling()
 
-# 🚀 Executa o bot
+# executa o bot
 if __name__ == "__main__":
     main()
